@@ -2,14 +2,6 @@
 	
 	function __autoload($class){
 		
-		// Logic to include exception classes
-		if(strpos($class, 'Exception')){
-			$dirs = explode("\\", $class);
-			$dirs[count($dirs)-1] = 'exception';
-			
-			$class = implode("\\", $dirs);
-		}
-		
 		$file = strtolower($class).'.php';
 		if(file_exists($file)){
 			include($file);
@@ -33,15 +25,11 @@
 				break;
 
 			case E_USER_WARNING:
-				echo "<b>InversoWarning</b> [$errno] $errstr<br />\n";
+				echo "<b>InversoWarning</b> [$errno] $errstr<br />\n in $errfile on line $errline";
 				break;
 
 			case E_USER_NOTICE:
-				echo "<b>InversoNotice</b> [$errno] $errstr<br />\n";
-				break;
-
-			default:
-				echo "Unknown error type: [$errno] $errstr<br />\n";
+				echo "<b>InversoNotice</b> [$errno] $errstr<br />\n in $errfile on line $errline";
 				break;
 		}
 

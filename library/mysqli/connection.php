@@ -4,31 +4,33 @@
 	
 	class Connection extends Database{
 		
-		private static $_credentials;
 		private static $_mysqli;
+		private $_credentials;
 		
 		public function __construct(array $credentials){
+						
 			$this->_credentials = $credentials;
-			if($conn = $this->validate()){
-				$this->_mysqli = $conn;
+			if($conn = $this->connect()){
+				self::$_mysqli = $conn;
 			}
 		}
 
 		protected function connect(){
-			return true;
-		}
-		
-		protected function validate(){
-		
-			list($host, $username, $password, $database) = $this->_credentials;
-			$conn = new mysqli($host, $username, $password, $database);
+			
+			list($host, $username, $password, $database) = $this->_credentials;			
+			$conn = new \mysqli($host, $username, $password, $database);
 			
 			if($conn->connect_errno){
-				trigger_error("Connection "  . $host . " is not a valid connection");
+				trigger_error($conn->connect_error);
 			} else {
 				return $conn;
 			}
 		}
+		
+		public function __get($var){
+			return $this->{$var};
+		}
+			
 	}
 		
 		
